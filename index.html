@@ -217,20 +217,18 @@
             text-shadow: 0 1px 2px var(--white);
             border-right: 2px solid transparent;
             font-family: 'Huiwen Mincho', '汇文明朝体', 'Times New Roman', serif;
-            
-            /* 优化 1：改用 em 单位控制字间距，并预留轻微右内边距，彻底解决最后一个字被切掉的问题 */
             letter-spacing: 0.12em;
             padding-right: 0.1em;
         }
 
-        /* 根据字数+间距精确计算出来的完美动效容器宽度 */
         .typing-line.line1 {
             animation: typingLine1 2s steps(12, end) forwards;
         }
 
         .typing-line.line2 {
             margin-top: 15px;
-            animation: typingLine2 2.5s steps(14, end) 2s forwards, blink-caret 0.75s step-end infinite;
+            /* ✅ 修复点：光标动画 blink-caret 加上了 2s 延迟 */
+            animation: typingLine2 2.5s steps(14, end) 2s forwards, blink-caret 0.75s step-end 2s infinite;
         }
 
         @keyframes typingLine1 {
@@ -317,7 +315,6 @@
         }
 
         /* === 6. 其实还有很多... === */
-        /* 优化 3：单独拉大“其实还有很多”区域与上方的间距，由原本的140px增大至220px */
         #videos {
             padding-top: 220px;
         }
@@ -522,9 +519,9 @@
             
             .typing-line { font-size: 1.1rem; }
             .typing-line.line1 { animation: typingLine1 2s steps(12, end) forwards; }
-            .typing-line.line2 { animation: typingLine2 2.5s steps(14, end) 2s forwards, blink-caret 0.75s step-end infinite; }
+            /* ✅ 修复点：移动端的媒体查询里也加上了 2s 延迟 */
+            .typing-line.line2 { animation: typingLine2 2.5s steps(14, end) 2s forwards, blink-caret 0.75s step-end 2s infinite; }
 
-            /* 移动端也同步保持间距感 */
             #videos { padding-top: 180px; }
 
             .photo-grid { gap: 15px; }
@@ -630,7 +627,7 @@
     </div>
     
     <audio id="bgMusic" loop preload="auto">
-        <source src="music/诀别书.mp3" type="audio/mpeg">
+        <source src="D:\从硬盘上扣下来的并不完整的临时文件\I don't know what it is\web" type="audio/mpeg">
     </audio>
 
     <script>
