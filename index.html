@@ -12,11 +12,12 @@
         /* === 1. 基础变量与全局重置 === */
         :root {
             --primary-blue: #A2D2FF;      /* 主色调：温柔淡蓝 */
+            --deep-blue: #2C5282;         /* 新增：深蓝色，用于高对比度标题 */
             --light-blue: #E0F7FA;        /* 辅助色：极浅蓝 */
             --white: #FFFFFF;
-            --text-main: #4A4A4A;         /* 主文本色：深灰 */
-            --text-muted: #7A7A7A;        /* 辅助文本色 */
-            --glass-bg: rgba(255, 255, 255, 0.7);
+            --text-main: #2D3748;         /* 加深主文本色：提高文字清晰度 */
+            --text-muted: #4A5568;        /* 加深辅助文本色 */
+            --glass-bg: rgba(255, 255, 255, 0.85); /* 提高毛玻璃不透明度，保护文字 */
         }
 
         * {
@@ -100,8 +101,9 @@
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--primary-blue);
+            color: var(--deep-blue);
             letter-spacing: 2px;
+            text-shadow: 0 1px 2px var(--white);
         }
 
         .nav-links {
@@ -111,15 +113,16 @@
 
         .nav-links li a {
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600; /* 加粗导航文字 */
             color: var(--text-muted);
             transition: color 0.3s;
             position: relative;
+            text-shadow: 0 1px 2px var(--white); /* 防止文字融入背景 */
         }
 
         .nav-links li a:hover,
         .nav-links li a.active {
-            color: var(--primary-blue);
+            color: var(--deep-blue);
         }
 
         .nav-links li a.active::after {
@@ -130,7 +133,7 @@
             transform: translateX(-50%);
             width: 20px;
             height: 3px;
-            background: var(--primary-blue);
+            background: var(--deep-blue);
             border-radius: 2px;
         }
 
@@ -138,7 +141,7 @@
             display: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--primary-blue);
+            color: var(--deep-blue);
         }
 
         /* === 3. 页面各区块通用样式 === */
@@ -153,10 +156,11 @@
         .section-title {
             text-align: center;
             font-size: 2.5rem;
-            color: var(--primary-blue);
+            color: var(--deep-blue); /* 改用深蓝色提升对比 */
             margin-bottom: 40px;
             font-weight: 700;
             letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8); /* 字体白色阴影描边 */
         }
 
         /* 滚动淡入动画初始状态 */
@@ -185,8 +189,8 @@
         .hero-title {
             font-size: 4.5rem;
             font-weight: 700;
-            color: var(--primary-blue);
-            text-shadow: 2px 2px 10px rgba(162, 210, 255, 0.3);
+            color: var(--deep-blue);
+            text-shadow: 2px 2px 12px rgba(255, 255, 255, 0.9), 0 0 10px rgba(162, 210, 255, 0.5);
             margin-bottom: 20px;
         }
 
@@ -194,13 +198,14 @@
         .typing-effect {
             font-size: 1.5rem;
             color: var(--text-muted);
-            font-weight: 300;
+            font-weight: 400;
             letter-spacing: 2px;
-            border-right: 2px solid var(--primary-blue); /* 模拟光标 */
+            border-right: 2px solid var(--deep-blue); /* 模拟光标 */
             white-space: nowrap;
             margin: 0 auto;
             overflow: hidden;
             width: 0;
+            text-shadow: 0 1px 2px var(--white);
             /* 触发打字与闪烁动画 */
             animation: typing 3.5s steps(13, end) forwards, blink-caret 0.75s step-end infinite;
         }
@@ -214,7 +219,7 @@
         /* 光标闪烁动画 */
         @keyframes blink-caret {
             from, to { border-color: transparent }
-            50% { border-color: var(--primary-blue); }
+            50% { border-color: var(--deep-blue); }
         }
 
         .scroll-down {
@@ -223,7 +228,7 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 2rem;
-            color: var(--primary-blue);
+            color: var(--deep-blue);
             animation: bounce 2s infinite;
             cursor: pointer;
         }
@@ -234,11 +239,13 @@
             60% { transform: translateY(-10px) translateX(-50%); }
         }
 
-        /* === 5. 光影回忆 (拍立得网格) === */
+        /* === 5. 光影回忆 (两行两列居中排列) === */
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(2, 1fr); /* 核心修改：固定为两列 */
             gap: 40px;
+            max-width: 800px; /* 限制最大宽度，使其完美对齐居中 */
+            margin: 0 auto;   /* 水平居中 */
         }
 
         .polaroid {
@@ -276,8 +283,10 @@
             width: 100%;
             text-align: center;
             font-family: 'Ma Shan Zheng', cursive; /* 手写字体 */
-            font-size: 1.5rem;
+            font-size: 1.6rem; /* 略微放大 */
+            font-weight: 600;
             color: var(--text-main);
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         /* === 6. 动态时光 (视频模块) === */
@@ -300,7 +309,7 @@
         .chat-wrapper {
             max-width: 600px;
             margin: 0 auto;
-            background: rgba(245, 245, 245, 0.8); /* 微微透明融入背景 */
+            background: rgba(245, 245, 245, 0.85); /* 微微透明融入背景 */
             border-radius: 20px;
             padding: 30px 20px;
             box-shadow: 0 10px 30px rgba(162, 210, 255, 0.3);
@@ -348,19 +357,21 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* 我的气泡（淡蓝色） */
+        /* 我的气泡（调深了蓝色背景，保证白色字体清晰醒目） */
         .chat-row.me .chat-bubble {
-            background: var(--primary-blue);
+            background: #5A9EED; 
             color: var(--white);
             border-radius: 18px 0 18px 18px;
-            box-shadow: 0 2px 5px rgba(162, 210, 255, 0.4);
+            box-shadow: 0 2px 5px rgba(90, 158, 237, 0.4);
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
         }
 
         .chat-time {
             text-align: center;
             font-size: 0.8rem;
-            color: #aaa;
+            color: #718096;
             margin: 10px 0;
+            text-shadow: 0 1px 1px var(--white);
         }
 
         /* === 8. 悬浮音乐播放器 === */
@@ -370,9 +381,9 @@
             right: 40px;
             width: 60px;
             height: 60px;
-            background: var(--primary-blue);
+            background: var(--deep-blue);
             border-radius: 50%;
-            box-shadow: 0 10px 30px rgba(162, 210, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(44, 82, 130, 0.4);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -400,7 +411,7 @@
 
         .music-player i {
             z-index: 1;
-            color: var(--primary-blue);
+            color: var(--deep-blue);
             font-size: 0.8rem;
         }
 
@@ -463,11 +474,35 @@
                 font-size: 1.2rem;
             }
 
+            /* 移动端两列布局优化调整，防止卡片过小导致变形 */
+            .photo-grid {
+                gap: 15px;
+            }
+            .polaroid {
+                padding: 10px 10px 45px 10px;
+            }
+            .polaroid img {
+                height: 160px;
+            }
+            .polaroid .caption {
+                font-size: 1.1rem;
+                bottom: 10px;
+            }
+
             .music-player {
                 bottom: 20px;
                 right: 20px;
                 width: 50px;
                 height: 50px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .polaroid img {
+                height: 120px;
+            }
+            .polaroid .caption {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -478,10 +513,10 @@
         <div class="nav-inner">
             <div class="logo">Happy 20th</div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#home" class="active">主页</a></li>
-                <li><a href="#photos">华为P70还是比不过苹果</a></li>
-                <li><a href="#videos">老师，我家孩子能当童模吗</a></li>
-                <li><a href="#chat">叽里咕噜说什么呢</a></li>
+                <li><a href="#home" class="active">首页</a></li>
+                <li><a href="#photos">这谁给我报的名</a></li>
+                <li><a href="#videos">动态时光</a></li>
+                <li><a href="#chat">日常碎片</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
                 <i class="fas fa-bars"></i>
@@ -492,7 +527,7 @@
     <section id="home" class="container fade-in-up">
         <div class="hero-content">
             <h1 class="hero-title">二十岁生日快乐</h1>
-            <p class="hero-subtitle typing-effect">愿你以梦为马，不负韶华。</p>
+            <p class="hero-subtitle typing-effect">你是我新鲜又永恒的春风，是唯一贯穿我所有诗篇的韵脚。</p>
         </div>
         <a href="#photos" class="scroll-down">
             <i class="fas fa-chevron-down"></i>
@@ -500,7 +535,7 @@
     </section>
 
     <section id="photos" class="container">
-        <h2 class="section-title fade-in-up">这谁给我报的名</h2>
+        <h2 class="section-title fade-in-up">A room of her own</h2>
         <div class="photo-grid">
             <div class="polaroid fade-in-up" style="transition-delay: 0.1s;">
                 <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=600&q=80" alt="相遇">
