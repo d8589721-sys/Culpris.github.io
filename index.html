@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20岁生日快乐 | 我们的专属回忆</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === 1. 基础变量与全局重置 === */
+        :root {
+            --primary-blue: #A2D2FF;      /* 主色调：温柔淡蓝 */
+            --light-blue: #E0F7FA;        /* 辅助色：极浅蓝 */
+            --bg-color: #F8FBFF;          /* 背景色：柔和偏白的蓝灰 */
+            --white: #FFFFFF;
+            --text-main: #4A4A4A;         /* 主文本色：深灰，比纯黑柔和 */
+            --text-muted: #7A7A7A;        /* 辅助文本色 */
+            --shadow-light: 0 10px 30px rgba(162, 210, 255, 0.2);
+            --shadow-hover: 0 15px 40px rgba(162, 210, 255, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* 开启平滑滚动 */
+            scroll-behavior: smooth;
+        }
+
+        ul { list-style: none; }
+        a { text-decoration: none; color: inherit; }
+
+        /* 居中流式容器 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* === 2. 毛玻璃顶部导航栏 === */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links li a {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-links li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-blue);
+        }
+
+        /* === 3. 页面各区块通用样式 === */
+        section {
+            padding: 100px 0 60px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 40px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* 滚动淡入动画初始状态 */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === 4. 首屏大视觉 (Hero Section) === */
+        #home {
+            height: 100vh;
+            text-align: center;
+            position: relative;
+            padding: 0;
+        }
+
+        .hero-content {
+            margin-top: -50px;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-shadow: 2px 2px 10px rgba(162, 210, 255, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--primary-blue);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+
+        /* === 5. 光影回忆 (拍立得网格) === */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .polaroid {
+            background: var(--white);
+            padding: 15px 15px 60px 15px;
+            box-shadow: var(--shadow-light);
+            border-radius: 4px;
+            position: relative;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+
+        .polaroid:hover {
+            transform: translateY(-10px) scale(1.03) rotate(-2deg);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .polaroid:nth-child(even):hover {
+            transform: translateY(-10px) scale(1.03) rotate(2deg);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .polaroid .caption {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: 'Ma Shan Zheng', cursive; /* 手写字体 */
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        /* === 6. 动态时光 (视频模块) === */
+        .video-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .video-container video {
+            width: 100%;
+            border-radius: 16px;
+            outline: none;
+        }
+
+        /* === 7. 日常碎片 (仿聊天界面) === */
+        .chat-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f5f5f5; /* 类似微信背景色 */
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: var(--shadow-light);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chat-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .chat-row.friend {
+            justify-content: flex-start;
+        }
+
+        .chat-row.me {
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chat-bubble {
+            max-width: 70%;
+            padding: 12px 18px;
+            font-size: 1rem;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        /* 朋友气泡（白色） */
+        .chat-row.friend .chat-bubble {
+            background: var(--white);
+            color: var(--text-main);
+            border-radius: 0 18px 18px 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* 我的气泡（淡蓝色） */
+        .chat-row.me .chat-bubble {
+            background: var(--primary-blue);
+            color: var(--white);
+            border-radius: 18px 0 18px 18px;
+            box-shadow: 0 2px 5px rgba(162, 210, 255, 0.4);
+        }
+
+        .chat-time {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin: 10px 0;
+        }
+
+        /* === 8. 悬浮音乐播放器 === */
+        .music-player {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            box-shadow: var(--shadow-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .music-player:hover {
+            transform: scale(1.1);
+        }
+
+        /* 黑胶唱片中心点设计 */
+        .music-player::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--white);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .music-player i {
+            z-index: 1;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+        }
+
+        /* 旋转动画 */
+        .spin {
+            animation: spinRecord 4s linear infinite;
+        }
+
+        @keyframes spinRecord {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 隐藏原生 audio */
+        audio {
+            display: none;
+        }
+
+        /* === 9. 响应式适配 (Mobile) === */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--glass-bg);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+            }
+
+            .nav-links.active {
+                max-height: 300px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links li a {
+                display: block;
+                padding: 15px 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .music-player {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">Happy 20th</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active">主页</a></li>
+                <li><a href="#photos">光影回忆</a></li>
+                <li><a href="#videos">动态时光</a></li>
+                <li><a href="#chat">日常碎片</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="container fade-in-up">
+        <div class="hero-content">
+            <h1 class="hero-title">二十岁生日快乐</h1>
+            <p class="hero-subtitle">愿你以梦为马，不负韶华</p>
+        </div>
+        <a href="#photos" class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <section id="photos" class="container">
+        <h2 class="section-title fade-in-up">光影回忆</h2>
+        <div class="photo-grid">
+            <div class="polaroid fade-in-up" style="transition-delay: 0.1s;">
+                <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=600&q=80" alt="相遇">
+                <div class="caption">那是我们第一次旅行</div>
+            </div>
+            <div class="polaroid fade-in-up" style="transition-delay: 0.2s;">
+                <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=600&q=80" alt="大笑">
+                <div class="caption">干杯！为了友谊</div>
+            </div>
+            <div class="polaroid fade-in-up" style="transition-delay: 0.3s;">
+                <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=600&q=80" alt="风景">
+                <div class="caption">海边的日落与你</div>
+            </div>
+            <div class="polaroid fade-in-up" style="transition-delay: 0.4s;">
+                <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=600&q=80" alt="蛋糕">
+                <div class="caption">去年的生日愿望</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="videos" class="container">
+        <h2 class="section-title fade-in-up">动态时光</h2>
+        <div class="video-container fade-in-up" style="transition-delay: 0.2s;">
+            <video controls poster="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80">
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                您的浏览器不支持 HTML5 视频播放。
+            </video>
+        </div>
+    </section>
+
+    <section id="chat" class="container">
+        <h2 class="section-title fade-in-up">日常碎片</h2>
+        <div class="chat-wrapper fade-in-up" style="transition-delay: 0.2s;">
+            
+            <div class="chat-time">2023年9月10日 下午 14:20</div>
+
+            <div class="chat-row friend fade-in-up">
+                <img src="https://ui-avatars.com/api/?name=Friend&background=fff&color=A2D2FF" alt="朋友头像" class="chat-avatar">
+                <div class="chat-bubble">
+                    周末去新开的那家甜品店打卡吗？看评价超级好！🍰
+                </div>
+            </div>
+
+            <div class="chat-row me fade-in-up">
+                <img src="https://ui-avatars.com/api/?name=Me&background=A2D2FF&color=fff" alt="我的头像" class="chat-avatar">
+                <div class="chat-bubble">
+                    必须去！我已经做好攻略了，听说抹茶千层是绝杀。
+                </div>
+            </div>
+
+            <div class="chat-time">昨天 晚上 23:45</div>
+
+            <div class="chat-row friend fade-in-up">
+                <img src="https://ui-avatars.com/api/?name=Friend&background=fff&color=A2D2FF" alt="朋友头像" class="chat-avatar">
+                <div class="chat-bubble">
+                    明天就是20岁啦，感觉时间过得好快呀...认识你真好。✨
+                </div>
+            </div>
+
+            <div class="chat-row me fade-in-up">
+                <img src="https://ui-avatars.com/api/?name=Me&background=A2D2FF&color=fff" alt="我的头像" class="chat-avatar">
+                <div class="chat-bubble">
+                    是啊，从高中到现在。提前祝你20岁生日快乐！明天准备接受惊喜吧🎁
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="music-player" id="musicBtn" title="播放/暂停">
+        <i class="fas fa-music"></i>
+    </div>
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. 移动端汉堡菜单切换
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                // 切换汉堡图标状态
+                const icon = hamburger.querySelector('i');
+                if(navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // 点击导航链接后自动收起菜单（移动端）
+            document.querySelectorAll('.nav-links li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if(window.innerWidth <= 768) {
+                        navLinks.classList.remove('active');
+                        hamburger.querySelector('i').classList.replace('fa-times', 'fa-bars');
+                    }
+                });
+            });
+
+            // 2. 音乐播放控制与黑胶旋转特效
+            const musicBtn = document.getElementById('musicBtn');
+            const bgMusic = document.getElementById('bgMusic');
+            let isPlaying = false;
+            let interacted = false; // 记录用户是否已发生首次交互
+
+            // 播放/暂停切换函数
+            const toggleMusic = () => {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    musicBtn.classList.remove('spin');
+                } else {
+                    bgMusic.play().then(() => {
+                        musicBtn.classList.add('spin');
+                    }).catch(err => {
+                        console.log("浏览器限制自动播放: ", err);
+                    });
+                }
+                isPlaying = !isPlaying;
+            };
+
+            // 点击悬浮按钮控制音乐
+            musicBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // 阻止事件冒泡触发首次交互逻辑
+                interacted = true;
+                toggleMusic();
+            });
+
+            // 用户首次点击页面任意位置时尝试自动播放背景音乐（绕过浏览器自动播放限制）
+            document.body.addEventListener('click', () => {
+                if (!interacted && !isPlaying) {
+                    interacted = true;
+                    toggleMusic();
+                }
+            });
+
+            // 3. 滚动监听 (Scroll Spy) - 高亮当前导航菜单
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-links li a');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    // 当滚动过区域的 1/3 时触发
+                    if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navItems.forEach(a => {
+                    a.classList.remove('active');
+                    if (a.getAttribute('href').includes(current)) {
+                        a.classList.add('active');
+                    }
+                });
+            });
+
+            // 4. 滚动进场淡入动画 (Intersection Observer)
+            const fadeElements = document.querySelectorAll('.fade-in-up');
+            
+            const appearOptions = {
+                threshold: 0.15, // 元素出现 15% 时触发
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // 动画执行一次后取消监听
+                    }
+                });
+            }, appearOptions);
+
+            fadeElements.forEach(el => {
+                appearOnScroll.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
