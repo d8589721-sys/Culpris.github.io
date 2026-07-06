@@ -9,10 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/dist/confetti.browser.min.js"></script>
     
     <style>
-        /* === 【新增】汇文明朝体 引入通道 === */
-        /* 如果你下载了该字体的文件（如 huiwen.woff2），可以放在网页同级目录下并解开下方注释 */
-        /* 
-        @font-face {
+        /* === 汇文明朝体 引入通道 === */
+        /* @font-face {
             font-family: 'Huiwen Mincho';
             src: url('huiwen.woff2') format('woff2'),
                  url('HuiwenMincho.ttf') format('truetype');
@@ -55,7 +53,6 @@
         }
 
         body {
-            /* 调整 1：将 'Times New Roman' 放在最前面，这样网页中所有的英文字体、数字都会优先使用它 */
             font-family: 'Times New Roman', 'Noto Sans SC', sans-serif;
             background: linear-gradient(-45deg, #E0F7FA, #FFF5F5, #A2D2FF, #FFFFFF);
             background-size: 400% 400%;
@@ -213,18 +210,20 @@
             font-size: 1.6rem;
             color: var(--text-muted);
             font-weight: 400;
-            letter-spacing: 3px;
             white-space: nowrap;
             overflow: hidden;
             width: 0;
             margin: 0 auto;
             text-shadow: 0 1px 2px var(--white);
             border-right: 2px solid transparent;
-            
-            /* 调整 2：将首页副标题字体改为 “汇文明朝体”，Times New Roman 作为数字英文后备，serif 做中文衬线后备 */
             font-family: 'Huiwen Mincho', '汇文明朝体', 'Times New Roman', serif;
+            
+            /* 优化 1：改用 em 单位控制字间距，并预留轻微右内边距，彻底解决最后一个字被切掉的问题 */
+            letter-spacing: 0.12em;
+            padding-right: 0.1em;
         }
 
+        /* 根据字数+间距精确计算出来的完美动效容器宽度 */
         .typing-line.line1 {
             animation: typingLine1 2s steps(12, end) forwards;
         }
@@ -237,14 +236,14 @@
         @keyframes typingLine1 {
             0% { width: 0; border-right-color: var(--deep-blue); }
             99% { border-right-color: var(--deep-blue); }
-            100% { width: 12em; border-right-color: transparent; } 
+            100% { width: 13.6em; border-right-color: transparent; } 
         }
 
         @keyframes typingLine2 {
             0% { width: 0; border-right-color: transparent; }
             1% { border-right-color: var(--deep-blue); }
             99% { border-right-color: var(--deep-blue); }
-            100% { width: 14em; border-right-color: var(--deep-blue); } 
+            100% { width: 15.8em; border-right-color: var(--deep-blue); } 
         }
 
         @keyframes blink-caret {
@@ -318,6 +317,11 @@
         }
 
         /* === 6. 其实还有很多... === */
+        /* 优化 3：单独拉大“其实还有很多”区域与上方的间距，由原本的140px增大至220px */
+        #videos {
+            padding-top: 220px;
+        }
+
         .video-container {
             max-width: 800px;
             margin: 0 auto;
@@ -333,7 +337,7 @@
             outline: none;
         }
 
-        /* === 7. 日常碎片 === */
+        /* === 7. 廿 (原日常碎片) === */
         .essay-btn-wrap {
             text-align: center;
             margin: 20px 0;
@@ -520,6 +524,9 @@
             .typing-line.line1 { animation: typingLine1 2s steps(12, end) forwards; }
             .typing-line.line2 { animation: typingLine2 2.5s steps(14, end) 2s forwards, blink-caret 0.75s step-end infinite; }
 
+            /* 移动端也同步保持间距感 */
+            #videos { padding-top: 180px; }
+
             .photo-grid { gap: 15px; }
             .polaroid { padding: 10px 10px 45px 10px; }
             .polaroid img { height: 160px; }
@@ -544,7 +551,7 @@
                 <li><a href="#home" class="active">首页</a></li>
                 <li><a href="#photos">这谁给我报的名</a></li>
                 <li><a href="#videos">其实还有很多...</a></li>
-                <li><a href="#chat">日常碎片</a></li>
+                <li><a href="#chat">廿</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
                 <i class="fas fa-bars"></i>
@@ -578,7 +585,7 @@
             </div>
             <div class="polaroid fade-in-up" style="transition-delay: 0.3s;">
                 <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=600&q=80" alt="风景">
-                <div class="caption">晚自习不准交头接耳</div>
+                <div class="caption">晚自戏不准交头接耳</div>
             </div>
             <div class="polaroid fade-in-up" style="transition-delay: 0.4s;">
                 <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=600&q=80" alt="蛋糕">
@@ -598,7 +605,7 @@
     </section>
 
     <section id="chat" class="container">
-        <h2 class="section-title fade-in-up">日常碎片</h2>
+        <h2 class="section-title fade-in-up">廿</h2>
         <div class="essay-btn-wrap fade-in-up" style="transition-delay: 0.2s;">
             <button id="openEssayBtn" class="essay-btn">
                 <i class="fas fa-envelope-open-text"></i> 打开回忆长信
@@ -622,7 +629,6 @@
         <i class="fas fa-music"></i>
     </div>
     
-    <!-- 调整 3：背景音乐标签。请记得把下面 src 里的“music/诀别书.mp3”换成你实际保存的音乐链接或文件名 -->
     <audio id="bgMusic" loop preload="auto">
         <source src="music/诀别书.mp3" type="audio/mpeg">
     </audio>
