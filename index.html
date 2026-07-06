@@ -6,18 +6,30 @@
     <title>20岁生日快乐 | 我们的专属回忆</title>
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/dist/confetti.browser.min.js"></script>
     
     <style>
+        /* === 【新增】汇文明朝体 引入通道 === */
+        /* 如果你下载了该字体的文件（如 huiwen.woff2），可以放在网页同级目录下并解开下方注释 */
+        /* 
+        @font-face {
+            font-family: 'Huiwen Mincho';
+            src: url('huiwen.woff2') format('woff2'),
+                 url('HuiwenMincho.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        */
+
         /* === 1. 基础变量与全局重置 === */
         :root {
-            --primary-blue: #A2D2FF;      /* 主色调：温柔淡蓝 */
-            --deep-blue: #2C5282;         /* 深蓝色，用于高对比度标题 */
-            --light-blue: #E0F7FA;        /* 辅助色：极浅蓝 */
+            --primary-blue: #A2D2FF;      
+            --deep-blue: #2C5282;         
+            --light-blue: #E0F7FA;        
             --white: #FFFFFF;
-            --text-main: #2D3748;         /* 加深主文本色 */
-            --text-muted: #4A5568;        /* 加深辅助文本色 */
-            --glass-bg: rgba(255, 255, 255, 0.85); /* 提高毛玻璃不透明度，保护文字 */
+            --text-main: #2D3748;         
+            --text-muted: #4A5568;        
+            --glass-bg: rgba(255, 255, 255, 0.85); 
         }
 
         * {
@@ -26,7 +38,7 @@
             box-sizing: border-box;
         }
 
-        /* 美化特效：定制专属“温柔蓝”滚动条 */
+        /* 定制专属“温柔蓝”滚动条 */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -43,8 +55,8 @@
         }
 
         body {
-            font-family: 'Noto Sans SC', sans-serif;
-            /* 美化特效：流光动感马卡龙渐变背景 */
+            /* 调整 1：将 'Times New Roman' 放在最前面，这样网页中所有的英文字体、数字都会优先使用它 */
+            font-family: 'Times New Roman', 'Noto Sans SC', sans-serif;
             background: linear-gradient(-45deg, #E0F7FA, #FFF5F5, #A2D2FF, #FFFFFF);
             background-size: 400% 400%;
             animation: gradientFlow 15s ease infinite;
@@ -54,7 +66,6 @@
             scroll-behavior: smooth;
         }
 
-        /* 渐变流动的动画逻辑 */
         @keyframes gradientFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -64,7 +75,6 @@
         ul { list-style: none; }
         a { text-decoration: none; color: inherit; }
 
-        /* 居中流式容器 */
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -145,7 +155,6 @@
 
         /* === 3. 页面各区块通用样式 === */
         section {
-            /* 调整 1：增大了上下 padding，拉开标题与上一个模块的间距 */
             padding: 140px 0 100px; 
             min-height: 100vh;
             display: flex;
@@ -163,7 +172,6 @@
             text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
         }
 
-        /* 滚动淡入动画 */
         .fade-in-up {
             opacity: 0;
             transform: translateY(40px);
@@ -194,7 +202,6 @@
             margin-bottom: 30px;
         }
 
-        /* 调整 2：打字机两行效果样式 */
         .typing-container {
             display: inline-block;
             text-align: center;
@@ -203,24 +210,25 @@
 
         .typing-line {
             display: block;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: var(--text-muted);
             font-weight: 400;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             white-space: nowrap;
             overflow: hidden;
             width: 0;
             margin: 0 auto;
             text-shadow: 0 1px 2px var(--white);
             border-right: 2px solid transparent;
+            
+            /* 调整 2：将首页副标题字体改为 “汇文明朝体”，Times New Roman 作为数字英文后备，serif 做中文衬线后备 */
+            font-family: 'Huiwen Mincho', '汇文明朝体', 'Times New Roman', serif;
         }
 
-        /* 第一行打字动画：2秒打完，结束后隐藏光标 */
         .typing-line.line1 {
             animation: typingLine1 2s steps(12, end) forwards;
         }
 
-        /* 第二行打字动画：延迟2秒后开始，2.5秒打完，保留呼吸光标 */
         .typing-line.line2 {
             margin-top: 15px;
             animation: typingLine2 2.5s steps(14, end) 2s forwards, blink-caret 0.75s step-end infinite;
@@ -229,17 +237,16 @@
         @keyframes typingLine1 {
             0% { width: 0; border-right-color: var(--deep-blue); }
             99% { border-right-color: var(--deep-blue); }
-            100% { width: 12em; border-right-color: transparent; } /* 12个字符 */
+            100% { width: 12em; border-right-color: transparent; } 
         }
 
         @keyframes typingLine2 {
             0% { width: 0; border-right-color: transparent; }
             1% { border-right-color: var(--deep-blue); }
             99% { border-right-color: var(--deep-blue); }
-            100% { width: 14em; border-right-color: var(--deep-blue); } /* 14个字符 */
+            100% { width: 14em; border-right-color: var(--deep-blue); } 
         }
 
-        /* 光标闪烁动画 */
         @keyframes blink-caret {
             from, to { border-color: transparent }
             50% { border-color: var(--deep-blue); }
@@ -310,7 +317,7 @@
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
 
-        /* === 6. 其实还有很多... (视频模块) === */
+        /* === 6. 其实还有很多... === */
         .video-container {
             max-width: 800px;
             margin: 0 auto;
@@ -326,7 +333,7 @@
             outline: none;
         }
 
-        /* === 调整 3：日常碎片改版（小作文按钮与弹窗控制） === */
+        /* === 7. 我们的二十岁 === */
         .essay-btn-wrap {
             text-align: center;
             margin: 20px 0;
@@ -355,11 +362,6 @@
             background: linear-gradient(135deg, #8ec3ff, var(--deep-blue));
         }
 
-        .essay-btn i {
-            font-size: 1.1rem;
-        }
-
-        /* 小作文毛玻璃弹窗主体 */
         .essay-modal {
             display: none;
             position: fixed;
@@ -433,7 +435,7 @@
 
         .essay-text p {
             margin-bottom: 18px;
-            text-indent: 2em; /* 首行自动缩进两格 */
+            text-indent: 2em; 
         }
 
         /* === 8. 悬浮音乐播放器 === */
@@ -487,7 +489,7 @@
 
         audio { display: none; }
 
-        /* === 9. 响应式适配 (Mobile) === */
+        /* === 9. 响应式适配 === */
         @media (max-width: 768px) {
             .nav-links {
                 position: absolute;
@@ -514,7 +516,6 @@
             .hamburger { display: block; }
             .hero-title { font-size: 3rem; }
             
-            /* 移动端打字机字体微调 */
             .typing-line { font-size: 1.1rem; }
             .typing-line.line1 { animation: typingLine1 2s steps(12, end) forwards; }
             .typing-line.line2 { animation: typingLine2 2.5s steps(14, end) 2s forwards, blink-caret 0.75s step-end infinite; }
@@ -543,7 +544,7 @@
                 <li><a href="#home" class="active">首页</a></li>
                 <li><a href="#photos">这谁给我报的名</a></li>
                 <li><a href="#videos">其实还有很多...</a></li>
-                <li><a href="#chat">日常碎片</a></li>
+                <li><a href="#chat">我们的二十岁</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
                 <i class="fas fa-bars"></i>
@@ -581,7 +582,7 @@
             </div>
             <div class="polaroid fade-in-up" style="transition-delay: 0.4s;">
                 <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=600&q=80" alt="蛋糕">
-                <div class="caption">一些“碎念念”</div>
+                <div class="caption">侠缘姐今天觉了吗</div>
             </div>
         </div>
     </section>
@@ -597,7 +598,7 @@
     </section>
 
     <section id="chat" class="container">
-        <h2 class="section-title fade-in-up">日常碎片</h2>
+        <h2 class="section-title fade-in-up">我们的二十岁</h2>
         <div class="essay-btn-wrap fade-in-up" style="transition-delay: 0.2s;">
             <button id="openEssayBtn" class="essay-btn">
                 <i class="fas fa-envelope-open-text"></i> 打开回忆长信
@@ -620,13 +621,14 @@
     <div class="music-player" id="musicBtn" title="播放/暂停">
         <i class="fas fa-music"></i>
     </div>
+    
+    <!-- 调整 3：背景音乐标签。请记得把下面 src 里的“music/诀别书.mp3”换成你实际保存的音乐链接或文件名 -->
     <audio id="bgMusic" loop preload="auto">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="music/诀别书.mp3" type="audio/mpeg">
     </audio>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. 移动端汉堡菜单切换
             const hamburger = document.getElementById('hamburger');
             const navLinks = document.getElementById('navLinks');
             
@@ -651,7 +653,6 @@
                 });
             });
 
-            // 2. 音乐播放控制与爆破特效
             const musicBtn = document.getElementById('musicBtn');
             const bgMusic = document.getElementById('bgMusic');
             let isPlaying = false;
@@ -689,7 +690,6 @@
                 }
             });
 
-            // 3. 滚动监听 (Scroll Spy)
             const sections = document.querySelectorAll('section');
             const navItems = document.querySelectorAll('.nav-links li a');
 
@@ -711,7 +711,6 @@
                 });
             });
 
-            // 4. 滚动进场淡入动画
             const fadeElements = document.querySelectorAll('.fade-in-up');
             const appearOptions = {
                 threshold: 0.15, 
@@ -733,26 +732,21 @@
                 appearOnScroll.observe(el);
             });
 
-            // 5. 新增 JS：小作文弹窗显示/隐藏逻辑
             const openEssayBtn = document.getElementById('openEssayBtn');
             const essayModal = document.getElementById('essayModal');
             const closeEssayBtn = document.getElementById('closeEssayBtn');
 
-            // 打开弹窗
             openEssayBtn.addEventListener('click', () => {
                 essayModal.classList.add('show');
-                document.body.style.overflow = 'hidden'; // 打开长信时禁止背景网页滚动，提升体验
+                document.body.style.overflow = 'hidden'; 
             });
 
-            // 关闭弹窗函数
             const closeModal = () => {
                 essayModal.classList.remove('show');
-                document.body.style.overflow = ''; // 恢复背景网页滚动
+                document.body.style.overflow = ''; 
             };
 
             closeEssayBtn.addEventListener('click', closeModal);
-            
-            // 点击外围半透明遮罩层同样可以关闭弹窗
             window.addEventListener('click', (e) => {
                 if (e.target === essayModal) {
                     closeModal();
