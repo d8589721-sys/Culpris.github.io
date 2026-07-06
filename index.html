@@ -12,10 +12,10 @@
         /* === 1. 基础变量与全局重置 === */
         :root {
             --primary-blue: #A2D2FF;      /* 主色调：温柔淡蓝 */
-            --deep-blue: #2C5282;         /* 新增：深蓝色，用于高对比度标题 */
+            --deep-blue: #2C5282;         /* 深蓝色，用于高对比度标题 */
             --light-blue: #E0F7FA;        /* 辅助色：极浅蓝 */
             --white: #FFFFFF;
-            --text-main: #2D3748;         /* 加深主文本色：提高文字清晰度 */
+            --text-main: #2D3748;         /* 加深主文本色 */
             --text-muted: #4A5568;        /* 加深辅助文本色 */
             --glass-bg: rgba(255, 255, 255, 0.85); /* 提高毛玻璃不透明度，保护文字 */
         }
@@ -51,7 +51,6 @@
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
-            /* 开启平滑滚动 */
             scroll-behavior: smooth;
         }
 
@@ -113,11 +112,11 @@
 
         .nav-links li a {
             font-size: 1rem;
-            font-weight: 600; /* 加粗导航文字 */
+            font-weight: 600;
             color: var(--text-muted);
             transition: color 0.3s;
             position: relative;
-            text-shadow: 0 1px 2px var(--white); /* 防止文字融入背景 */
+            text-shadow: 0 1px 2px var(--white);
         }
 
         .nav-links li a:hover,
@@ -146,7 +145,8 @@
 
         /* === 3. 页面各区块通用样式 === */
         section {
-            padding: 100px 0 60px;
+            /* 调整 1：增大了上下 padding，拉开标题与上一个模块的间距 */
+            padding: 140px 0 100px; 
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -156,14 +156,14 @@
         .section-title {
             text-align: center;
             font-size: 2.5rem;
-            color: var(--deep-blue); /* 改用深蓝色提升对比 */
-            margin-bottom: 40px;
+            color: var(--deep-blue);
+            margin-bottom: 50px;
             font-weight: 700;
             letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8); /* 字体白色阴影描边 */
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
         }
 
-        /* 滚动淡入动画初始状态 */
+        /* 滚动淡入动画 */
         .fade-in-up {
             opacity: 0;
             transform: translateY(40px);
@@ -183,7 +183,7 @@
         }
 
         .hero-content {
-            margin-top: -50px;
+            margin-top: -30px;
         }
 
         .hero-title {
@@ -191,29 +191,52 @@
             font-weight: 700;
             color: var(--deep-blue);
             text-shadow: 2px 2px 12px rgba(255, 255, 255, 0.9), 0 0 10px rgba(162, 210, 255, 0.5);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
-        /* 美化特效：首屏副标题“打字机”动态效果 */
-        .typing-effect {
+        /* 调整 2：打字机两行效果样式 */
+        .typing-container {
+            display: inline-block;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .typing-line {
+            display: block;
             font-size: 1.5rem;
             color: var(--text-muted);
             font-weight: 400;
             letter-spacing: 2px;
-            border-right: 2px solid var(--deep-blue); /* 模拟光标 */
             white-space: nowrap;
-            margin: 0 auto;
             overflow: hidden;
             width: 0;
+            margin: 0 auto;
             text-shadow: 0 1px 2px var(--white);
-            /* 触发打字与闪烁动画 */
-            animation: typing 3.5s steps(13, end) forwards, blink-caret 0.75s step-end infinite;
+            border-right: 2px solid transparent;
         }
 
-        /* 打字机宽度改变动画 */
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 13.5em; }
+        /* 第一行打字动画：2秒打完，结束后隐藏光标 */
+        .typing-line.line1 {
+            animation: typingLine1 2s steps(12, end) forwards;
+        }
+
+        /* 第二行打字动画：延迟2秒后开始，2.5秒打完，保留呼吸光标 */
+        .typing-line.line2 {
+            margin-top: 15px;
+            animation: typingLine2 2.5s steps(14, end) 2s forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typingLine1 {
+            0% { width: 0; border-right-color: var(--deep-blue); }
+            99% { border-right-color: var(--deep-blue); }
+            100% { width: 12em; border-right-color: transparent; } /* 12个字符 */
+        }
+
+        @keyframes typingLine2 {
+            0% { width: 0; border-right-color: transparent; }
+            1% { border-right-color: var(--deep-blue); }
+            99% { border-right-color: var(--deep-blue); }
+            100% { width: 14em; border-right-color: var(--deep-blue); } /* 14个字符 */
         }
 
         /* 光标闪烁动画 */
@@ -239,19 +262,18 @@
             60% { transform: translateY(-10px) translateX(-50%); }
         }
 
-        /* === 5. 光影回忆 (两行两列居中排列) === */
+        /* === 5. 光影回忆 === */
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 核心修改：固定为两列 */
+            grid-template-columns: repeat(2, 1fr);
             gap: 40px;
-            max-width: 800px; /* 限制最大宽度，使其完美对齐居中 */
-            margin: 0 auto;   /* 水平居中 */
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .polaroid {
             background: var(--white);
             padding: 15px 15px 60px 15px;
-            /* 美化特效：图片柔和“呼吸感”环境蓝色阴影 */
             box-shadow: 0 10px 30px rgba(162, 210, 255, 0.4);
             border-radius: 4px;
             position: relative;
@@ -261,7 +283,6 @@
 
         .polaroid:hover {
             transform: translateY(-10px) scale(1.03) rotate(-2deg);
-            /* 悬浮时阴影加深，增强悬浮空气感 */
             box-shadow: 0 15px 40px rgba(162, 210, 255, 0.6);
         }
 
@@ -282,14 +303,14 @@
             left: 0;
             width: 100%;
             text-align: center;
-            font-family: 'Ma Shan Zheng', cursive; /* 手写字体 */
-            font-size: 1.6rem; /* 略微放大 */
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.6rem;
             font-weight: 600;
             color: var(--text-main);
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
 
-        /* === 6. 动态时光 (视频模块) === */
+        /* === 6. 其实还有很多... (视频模块) === */
         .video-container {
             max-width: 800px;
             margin: 0 auto;
@@ -305,73 +326,114 @@
             outline: none;
         }
 
-        /* === 7. 日常碎片 (仿聊天界面) === */
-        .chat-wrapper {
-            max-width: 600px;
-            margin: 0 auto;
-            background: rgba(245, 245, 245, 0.85); /* 微微透明融入背景 */
-            border-radius: 20px;
-            padding: 30px 20px;
-            box-shadow: 0 10px 30px rgba(162, 210, 255, 0.3);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .chat-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            width: 100%;
-        }
-
-        .chat-row.friend {
-            justify-content: flex-start;
-        }
-
-        .chat-row.me {
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-        }
-
-        .chat-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .chat-bubble {
-            max-width: 70%;
-            padding: 12px 18px;
-            font-size: 1rem;
-            line-height: 1.5;
-            position: relative;
-        }
-
-        /* 朋友气泡（白色） */
-        .chat-row.friend .chat-bubble {
-            background: var(--white);
-            color: var(--text-main);
-            border-radius: 0 18px 18px 18px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        /* 我的气泡（调深了蓝色背景，保证白色字体清晰醒目） */
-        .chat-row.me .chat-bubble {
-            background: #5A9EED; 
-            color: var(--white);
-            border-radius: 18px 0 18px 18px;
-            box-shadow: 0 2px 5px rgba(90, 158, 237, 0.4);
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-        }
-
-        .chat-time {
+        /* === 调整 3：日常碎片改版（小作文按钮与弹窗控制） === */
+        .essay-btn-wrap {
             text-align: center;
-            font-size: 0.8rem;
-            color: #718096;
-            margin: 10px 0;
-            text-shadow: 0 1px 1px var(--white);
+            margin: 20px 0;
+        }
+
+        .essay-btn {
+            background: linear-gradient(135deg, var(--primary-blue), #5A9EED);
+            color: var(--white);
+            border: none;
+            padding: 16px 45px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(162, 210, 255, 0.5);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .essay-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(90, 158, 237, 0.6);
+            background: linear-gradient(135deg, #8ec3ff, var(--deep-blue));
+        }
+
+        .essay-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* 小作文毛玻璃弹窗主体 */
+        .essay-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(44, 82, 130, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .essay-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .essay-modal-content {
+            background: rgba(255, 255, 255, 0.92);
+            padding: 45px 40px;
+            border-radius: 28px;
+            max-width: 650px;
+            width: 85%;
+            max-height: 75vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(44, 82, 130, 0.2);
+            position: relative;
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .essay-modal.show .essay-modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .close-essay-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .close-essay-btn:hover {
+            color: var(--deep-blue);
+            transform: rotate(90deg);
+        }
+
+        .essay-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.4rem;
+            color: var(--deep-blue);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .essay-text {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        .essay-text p {
+            margin-bottom: 18px;
+            text-indent: 2em; /* 首行自动缩进两格 */
         }
 
         /* === 8. 悬浮音乐播放器 === */
@@ -398,7 +460,6 @@
             transform: scale(1.1);
         }
 
-        /* 黑胶唱片中心点设计 */
         .music-player::before {
             content: '';
             position: absolute;
@@ -415,7 +476,6 @@
             font-size: 0.8rem;
         }
 
-        /* 旋转动画 */
         .spin {
             animation: spinRecord 4s linear infinite;
         }
@@ -425,10 +485,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* 隐藏原生 audio */
-        audio {
-            display: none;
-        }
+        audio { display: none; }
 
         /* === 9. 响应式适配 (Mobile) === */
         @media (max-width: 768px) {
@@ -452,58 +509,28 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.5);
             }
 
-            .nav-links li {
-                width: 100%;
-                text-align: center;
-            }
+            .nav-links li { width: 100%; text-align: center; }
+            .nav-links li a { display: block; padding: 15px 0; }
+            .hamburger { display: block; }
+            .hero-title { font-size: 3rem; }
+            
+            /* 移动端打字机字体微调 */
+            .typing-line { font-size: 1.1rem; }
+            .typing-line.line1 { animation: typingLine1 2s steps(12, end) forwards; }
+            .typing-line.line2 { animation: typingLine2 2.5s steps(14, end) 2s forwards, blink-caret 0.75s step-end infinite; }
 
-            .nav-links li a {
-                display: block;
-                padding: 15px 0;
-            }
-
-            .hamburger {
-                display: block;
-            }
-
-            .hero-title {
-                font-size: 3rem;
-            }
-
-            .typing-effect {
-                font-size: 1.2rem;
-            }
-
-            /* 移动端两列布局优化调整，防止卡片过小导致变形 */
-            .photo-grid {
-                gap: 15px;
-            }
-            .polaroid {
-                padding: 10px 10px 45px 10px;
-            }
-            .polaroid img {
-                height: 160px;
-            }
-            .polaroid .caption {
-                font-size: 1.1rem;
-                bottom: 10px;
-            }
-
-            .music-player {
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-            }
+            .photo-grid { gap: 15px; }
+            .polaroid { padding: 10px 10px 45px 10px; }
+            .polaroid img { height: 160px; }
+            .polaroid .caption { font-size: 1.1rem; bottom: 10px; }
+            .music-player { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+            .essay-modal-content { padding: 30px 20px; }
+            .essay-title { font-size: 1.8rem; }
         }
         
         @media (max-width: 480px) {
-            .polaroid img {
-                height: 120px;
-            }
-            .polaroid .caption {
-                font-size: 0.9rem;
-            }
+            .polaroid img { height: 120px; }
+            .polaroid .caption { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -515,7 +542,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" class="active">首页</a></li>
                 <li><a href="#photos">这谁给我报的名</a></li>
-                <li><a href="#videos">动态时光</a></li>
+                <li><a href="#videos">其实还有很多...</a></li>
                 <li><a href="#chat">日常碎片</a></li>
             </ul>
             <div class="hamburger" id="hamburger">
@@ -527,7 +554,10 @@
     <section id="home" class="container fade-in-up">
         <div class="hero-content">
             <h1 class="hero-title">二十岁生日快乐</h1>
-            <p class="hero-subtitle typing-effect">你是我新鲜又永恒的春风，是唯一贯穿我所有诗篇的韵脚。</p>
+            <div class="typing-container">
+                <span class="typing-line line1">你是我新鲜又永恒的春风，</span>
+                <span class="typing-line line2">是唯一贯穿我所有诗篇的韵脚。</span>
+            </div>
         </div>
         <a href="#photos" class="scroll-down">
             <i class="fas fa-chevron-down"></i>
@@ -551,13 +581,13 @@
             </div>
             <div class="polaroid fade-in-up" style="transition-delay: 0.4s;">
                 <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=600&q=80" alt="蛋糕">
-                <div class="caption">去年的生日愿望</div>
+                <div class="caption">一些“碎念念”</div>
             </div>
         </div>
     </section>
 
     <section id="videos" class="container">
-        <h2 class="section-title fade-in-up">动态时光</h2>
+        <h2 class="section-title fade-in-up">其实还有很多...</h2>
         <div class="video-container fade-in-up" style="transition-delay: 0.2s;">
             <video controls poster="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80">
                 <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
@@ -568,42 +598,24 @@
 
     <section id="chat" class="container">
         <h2 class="section-title fade-in-up">日常碎片</h2>
-        <div class="chat-wrapper fade-in-up" style="transition-delay: 0.2s;">
-            
-            <div class="chat-time">2023年9月10日 下午 14:20</div>
-
-            <div class="chat-row friend fade-in-up">
-                <img src="https://ui-avatars.com/api/?name=Friend&background=fff&color=A2D2FF" alt="朋友头像" class="chat-avatar">
-                <div class="chat-bubble">
-                    周末去新开的那家甜品店打卡吗？看评价超级好！🍰
-                </div>
-            </div>
-
-            <div class="chat-row me fade-in-up">
-                <img src="https://ui-avatars.com/api/?name=Me&background=A2D2FF&color=fff" alt="我的头像" class="chat-avatar">
-                <div class="chat-bubble">
-                    必须去！我已经做好攻略了，听说抹茶千层是绝杀。
-                </div>
-            </div>
-
-            <div class="chat-time">昨天 晚上 23:45</div>
-
-            <div class="chat-row friend fade-in-up">
-                <img src="https://ui-avatars.com/api/?name=Friend&background=fff&color=A2D2FF" alt="朋友头像" class="chat-avatar">
-                <div class="chat-bubble">
-                    明天就是20岁啦，感觉时间过得好快呀...认识你真好。✨
-                </div>
-            </div>
-
-            <div class="chat-row me fade-in-up">
-                <img src="https://ui-avatars.com/api/?name=Me&background=A2D2FF&color=fff" alt="我的头像" class="chat-avatar">
-                <div class="chat-bubble">
-                    是啊，从高中到现在。提前祝你20岁生日快乐！明天准备接受惊喜吧🎁
-                </div>
-            </div>
-
+        <div class="essay-btn-wrap fade-in-up" style="transition-delay: 0.2s;">
+            <button id="openEssayBtn" class="essay-btn">
+                <i class="fas fa-envelope-open-text"></i> 打开回忆长信
+            </button>
         </div>
     </section>
+
+    <div id="essayModal" class="essay-modal">
+        <div class="essay-modal-content">
+            <span class="close-essay-btn" id="closeEssayBtn">&times;</span>
+            <h3 class="essay-title">写在20岁的一封信</h3>
+            <div class="essay-text">
+                <p>（这里是为你预留的小作文文字稿位置。等你准备好文字稿后，直接用你的文字替换掉这一块的所有段落即可，每一个 &lt;p&gt; 标签代表一个新的段落，会自动帮你进行首行缩进。）</p>
+                <p>在这个特别的20岁生日里，想对你说的其实还有很多很多。时光很长，世界很温柔，而与你一同走过的旅程，每一个日常碎片都在记忆里闪闪发光。</p>
+                <p>无论是那些不着边际的玩笑，还是并肩一起看过的每一场夕阳，都是时间送给我们最好的礼物。愿你的二十岁，能去到更远的地方，看到更美丽的风景，永远肆意快乐，永远是那个被爱包围的女孩。✨</p>
+            </div>
+        </div>
+    </div>
 
     <div class="music-player" id="musicBtn" title="播放/暂停">
         <i class="fas fa-music"></i>
@@ -639,7 +651,7 @@
                 });
             });
 
-            // 2. 音乐播放控制与美化特效：彩带爆破交互
+            // 2. 音乐播放控制与爆破特效
             const musicBtn = document.getElementById('musicBtn');
             const bgMusic = document.getElementById('bgMusic');
             let isPlaying = false;
@@ -652,7 +664,6 @@
                 } else {
                     bgMusic.play().then(() => {
                         musicBtn.classList.add('spin');
-                        // 美化特效：触发彩带爆破
                         confetti({
                             particleCount: 150,
                             spread: 70,
@@ -702,7 +713,6 @@
 
             // 4. 滚动进场淡入动画
             const fadeElements = document.querySelectorAll('.fade-in-up');
-            
             const appearOptions = {
                 threshold: 0.15, 
                 rootMargin: "0px 0px -50px 0px"
@@ -721,6 +731,32 @@
 
             fadeElements.forEach(el => {
                 appearOnScroll.observe(el);
+            });
+
+            // 5. 新增 JS：小作文弹窗显示/隐藏逻辑
+            const openEssayBtn = document.getElementById('openEssayBtn');
+            const essayModal = document.getElementById('essayModal');
+            const closeEssayBtn = document.getElementById('closeEssayBtn');
+
+            // 打开弹窗
+            openEssayBtn.addEventListener('click', () => {
+                essayModal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // 打开长信时禁止背景网页滚动，提升体验
+            });
+
+            // 关闭弹窗函数
+            const closeModal = () => {
+                essayModal.classList.remove('show');
+                document.body.style.overflow = ''; // 恢复背景网页滚动
+            };
+
+            closeEssayBtn.addEventListener('click', closeModal);
+            
+            // 点击外围半透明遮罩层同样可以关闭弹窗
+            window.addEventListener('click', (e) => {
+                if (e.target === essayModal) {
+                    closeModal();
+                }
             });
         });
     </script>
